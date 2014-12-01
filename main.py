@@ -11,13 +11,14 @@ Keys:
     s      - apply sobel filter for edge detection
     l      - apply laplacian filter for edge detection
     m      - apply median filter for noise reduction
+    g      - apply gabor filter (for edge detection + feature extraction)
 '''
 
 __author__ = 'User'
 import cv2
 from segmentation.algorithm import KMeans
 from edgedetection.algorithm import Canny, Sobel, Laplacian
-from noisereduction.filter import Median
+from noisereduction.filter import Median, Gabor
 
 
 class Camera(object):
@@ -30,6 +31,7 @@ class Camera(object):
         self._sobel = None
         self._laplacian = None
         self._median = None
+        self._gabor = None
         self._normal = True
 
     def run(self):
@@ -47,6 +49,8 @@ class Camera(object):
                 # self._frame = self._canny.test()
             elif self._sobel is not None:
                 self._frame = self._sobel.execute(frame)
+            elif self._gabor is not None:
+                self._frame = self._gabor.execute(frame)
             elif self._laplacian is not None:
                 self._frame = self._laplacian.execute(frame)
             elif self._median is not None:
@@ -63,6 +67,9 @@ class Camera(object):
         elif key_code == 107:  # k
             self.reset_operator()
             self._k_means = KMeans()
+        elif key_code == 103:  # g
+            self.reset_operator()
+            self._gabor = Gabor()
         elif key_code == 108:  # l
             self.reset_operator()
             self._laplacian = Laplacian()
@@ -85,6 +92,7 @@ class Camera(object):
         self._sobel = None
         self._laplacian = None
         self._median = None
+        self._gabor = None
         self._normal = False
 
 if __name__ == "__main__":
