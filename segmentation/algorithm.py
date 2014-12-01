@@ -14,6 +14,7 @@ class BaseModel(object):
         im = cv2.imread("NB030.jpg")
         im_out = self.execute(im)
         cv2.imwrite("NB030_out.png", im_out)
+        # just for test
         return im_out
 
 
